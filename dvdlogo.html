@@ -1,0 +1,136 @@
+<html id = "html" style="background-color: white;">
+<body id = "body" onload="draw()">
+
+<button style="position: absolute;"
+
+			   onclick = "pause_start()" id = "pause_start_button">pause</button>
+
+<canvas style="
+			   position: absolute;
+			   left: 50%;
+			   top: 50%;
+			   transform: translateY(-50%) translateX(-50%);
+
+
+
+" id="canvas" width="100" height="100" style = "transition-duration: 0.1s;"></canvas>
+
+<!-- <a style="position: absolute;transform: translate(0px,0px);">x</a>
+ -->
+<a id = "top_right_x" style="position: absolute;">x</a>
+
+
+
+</body>
+
+
+
+</html>
+
+<script>
+
+// attempt to place a marker at the corner of the screen
+ top_right_x = document.getElementById("top_right_x")
+ top_right_x.style.transform = "translate(" + (window.innerWidth -30) + "px," + (window.innerHeight - 30) + "px)"
+
+console.log(document.body.getBoundingClientRect())
+console.log(document.getElementById("html").getBoundingClientRect())
+
+
+let pause_start_switch = false
+
+var pause_start = function(){
+	let pause_start_button = document.getElementById("pause_start_button")
+	if (pause_start_switch == false){
+		pause_start_button.innerHTML = "start"
+		pause_start_switch = true
+		clearInterval(positionUpdate_interval)
+	}
+	else if (pause_start_switch == true){
+		pause_start_button.innerHTML = "pause"
+		pause_start_switch = false		
+		positionUpdate_interval = setInterval(positionUpdate, 1)
+	}
+
+}
+
+
+function draw() {
+  var canvas = document.getElementById('canvas');
+  if (canvas.getContext) {
+    var context = canvas.getContext('2d');
+    context.fillRect(20,20,100,100);
+
+  }
+}
+
+
+
+let canvas = document.getElementById('canvas')
+let xaxis = 0
+let yaxis = 0
+let xaxis_speed = 1
+let yaxis_speed = 1
+
+function positionUpdate(){
+if (pause_start_switch == true){
+	console.log("paused")
+}
+
+else {
+	// slow_mo_mode()
+	xaxis = xaxis + xaxis_speed
+	yaxis = yaxis + yaxis_speed
+	canvas.style.transform = "translate(" + xaxis + "px ," + yaxis + "px)"
+
+	if (yaxis + 101 >= window.innerHeight/2){
+		yaxis_speed = yaxis_speed * -1
+		console.log("bottom yaxis is " + yaxis + " as compared to " + window.innerHeight)
+	}
+	else if (xaxis + 101 >= window.innerWidth/2){
+		xaxis_speed = xaxis_speed * -1
+		console.log("right xaxis is " + xaxis + " as compared to " + window.innerWidth)
+	}
+	else if (yaxis + 20 <= -1*window.innerHeight/2){
+		yaxis_speed = yaxis_speed * -1
+		console.log("top yaxis is " + yaxis + " as compared to " + window.innerHeight)
+	}
+	else if (xaxis + 20 <= -1*window.innerWidth/2){
+		xaxis_speed = xaxis_speed * -1
+		console.log("left xaxis is " + xaxis + " as compared to " + window.innerWidth)
+
+	}
+}
+}
+
+
+var positionUpdate_interval = setInterval(positionUpdate, 1)
+
+// setInterval(function(){
+// 			console.log(xaxis, yaxis)
+// 					}, 1000)
+
+
+
+// var slow_mo_mode = function(){
+// 	if (yaxis + 120 >= window.innerHeight/2 || xaxis + 120 >= window.innerWidth/2 || yaxis + 0 <= -1*window.innerHeight/2 || xaxis + 0 <= -1*window.innerWidth/2){
+// 		clearInterval(positionUpdate_interval)
+// 		positionUpdate_interval = setInterval(positionUpdate, 100)
+// 	}
+// 	else {
+// 		clearInterval(positionUpdate_interval)
+// 		positionUpdate_interval = setInterval(positionUpdate, 1)
+
+// 	}
+
+// }
+
+
+
+var WindowParameterLog = function(){
+	let wHeight = window.innerHeight
+	let wWidth = window.innerWidth
+	console.log(wWidth, wHeight)
+}()
+
+</script>
