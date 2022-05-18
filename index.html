@@ -82,7 +82,7 @@ else {
 	xaxis = xaxis + xaxis_speed
 	yaxis = yaxis + yaxis_speed
 	canvas.style.transform = "translate(" + xaxis + "px ," + yaxis + "px)"
-
+	///hitbox detection with some console debugging. 
 	if (yaxis + 101 >= window.innerHeight/2){
 		yaxis_speed = yaxis_speed * -1
 		console.log("bottom yaxis is " + yaxis + " as compared to " + window.innerHeight)
@@ -100,12 +100,21 @@ else {
 		console.log("left xaxis is " + xaxis + " as compared to " + window.innerWidth)
 
 	}
+	///if window gets resized, this will teleport the square back into the window.
+	if (yaxis >= window.innerHeight/1.5 || xaxis >= window.innerWidth/1.5 || yaxis <= -1*window.innerHeight/1.5 || xaxis <= -1*window.innerWidth/1.5){
+		xaxis = 0
+		yaxis = 0
+		canvas.style.transform = "translateY(-50%) translateX(-50%)"
+		console.log("outside of frame")
+	}
+
 }
 }
 
 
 var positionUpdate_interval = setInterval(positionUpdate, 1)
 
+///this function was used to create epic slow mo moments when it detects that the 
 // setInterval(function(){
 // 			console.log(xaxis, yaxis)
 // 					}, 1000)
